@@ -3,8 +3,8 @@ from typing import Optional
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.models.users import User
-from app.domain.schemas.users import UserCreate, UserUpdateInDB
+from app.domain.models.users_models import User
+from app.domain.schemas.users_schemas import UserCreate, UserUpdateInDB
 
 
 class UserRepository:

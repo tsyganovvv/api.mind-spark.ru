@@ -3,7 +3,7 @@ from typing import Optional
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.schemas.users import UserCreate, UserUpdate, UserUpdateInDB
+from app.domain.schemas.users_schemas import UserCreate, UserUpdate, UserUpdateInDB
 from app.repositories.user_repository import UserRepository
 
 pwd_context = CryptContext(

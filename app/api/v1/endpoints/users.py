@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.dependencies.services import get_user_service
-from app.domain.schemas.users import UserCreate, UserResponse, UserUpdate
+from app.domain.schemas.users_schemas import UserCreate, UserResponse, UserUpdate
 from app.services.user_service import UserService
 
 
