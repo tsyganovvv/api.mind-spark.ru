@@ -23,6 +23,13 @@ class UserUpdate(UserBase):
     password: Optional[str] = None
 
 
+class UserUpdateInDB(UserBase):
+    email: EmailStr
+    username: str
+    fullname: str
+    hashed_password: str
+
+
 class UserResponse(UserBase):
     id: int
     is_active: bool

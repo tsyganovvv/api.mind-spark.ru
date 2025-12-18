@@ -4,7 +4,7 @@ from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.models.users import User
-from app.domain.schemas.users import UserCreate, UserUpdate
+from app.domain.schemas.users import UserCreate, UserUpdateInDB
 
 
 class UserRepository:
@@ -17,6 +17,10 @@ class UserRepository:
 
     async def get_by_email(self, user_email: str) -> Optional[User]:
         result = await self.db.execute(select(User).where(User.email == user_email))
+        return result.scalar_one_or_none()
+    
+    async def get_by_id(self, user_id: int) -> Optional[User]:
+        result = await self.db.execute(select(User).where(User.id == user_id))
         return result.scalar_one_or_none()
 
     async def get_all(self, skip: int = 0, limit: int = 100) -> list[User]:
@@ -35,8 +39,8 @@ class UserRepository:
         await self.db.refresh(db_user)
         return db_user
 
-    async def update(self, user_id: int, user_data: UserUpdate) -> Optional[User]:
-        update_data = user_data.__dict__
+    async def update(self, user_id: int, user_data: UserUpdateInDB) -> Optional[User]:
+        update_data = user_data.model_dump()
         if not update_data:
             return None
         await self.db.execute(
