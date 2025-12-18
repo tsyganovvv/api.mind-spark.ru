@@ -1,26 +1,29 @@
 from typing import Optional
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from passlib.context import CryptContext
-from app.repositories.user_repository import UserRepository
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.domain.schemas.users import UserCreate
+from app.repositories.user_repository import UserRepository
 
 pwd_context = CryptContext(
-    schemes=["bcrypt"], 
+    schemes=["bcrypt"],
     deprecated="auto",
-    )
+)
+
 
 class UserService:
     def __init__(self, db: AsyncSession):
         self.repository = UserRepository(db)
-    
+
     @staticmethod
-    def verify_password(plain_password: str, hashed_password: str)-> bool:
+    def verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
-    
+
     @staticmethod
-    def get_password_hash(password: str)-> str:
+    def get_password_hash(password: str) -> str:
         return pwd_context.hash(password)
-    
+
     async def create_user(self, user_data: UserCreate) -> dict:
         existing_user = await self.repository.get_by_email(user_data.email)
         if existing_user:
@@ -34,9 +37,9 @@ class UserService:
             "username": user.username,
             "is_active": user.is_active,
             "created_at": user.created_at,
-            "fullname": user.fullname
+            "fullname": user.fullname,
         }
-    
+
     async def authenticate_user(self, email: str, password: str) -> Optional[dict]:
         user = await self.repository.get_by_email(email)
         if not user:
@@ -46,5 +49,5 @@ class UserService:
         return {
             "id": user.id,
             "email": user.email,
-            "username": user.username, 
+            "username": user.username,
         }

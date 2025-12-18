@@ -1,8 +1,10 @@
-from fastapi import FastAPI
 from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
 from app.api import router
-from app.db.session import engine, Base
-from app.domain.models.users import User
+from app.db.session import Base, engine
+
 
 @asynccontextmanager
 async def lifespan(app=FastAPI):
@@ -11,19 +13,12 @@ async def lifespan(app=FastAPI):
     yield
     await engine.dispose()
 
-app = FastAPI(
-    title='MindSpark',
-    version='1.0.0',
-    lifespan=lifespan
-)
+
+app = FastAPI(title="MindSpark", version="1.0.0", lifespan=lifespan)
 
 app.include_router(router)
 
-if __name__=="__main__":
+if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(
-        "app.main:app", 
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-        )
+
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

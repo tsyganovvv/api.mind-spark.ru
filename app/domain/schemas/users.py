@@ -1,6 +1,8 @@
-from pydantic import EmailStr
 from datetime import datetime
 from typing import Optional
+
+from pydantic import EmailStr
+
 from app.domain.schemas import Base
 
 
@@ -9,14 +11,17 @@ class UserBase(Base):
     username: str
     fullname: Optional[str] = None
 
+
 class UserCreate(UserBase):
     password: Optional[str]
+
 
 class UserUpdate(UserBase):
     email: Optional[EmailStr] = None
     username: Optional[str] = None
     fullname: Optional[str] = None
     password: Optional[str] = None
+
 
 class UserResponse(UserBase):
     id: int
@@ -27,4 +32,3 @@ class UserResponse(UserBase):
 
     class Config:
         from_attributes = True
-
