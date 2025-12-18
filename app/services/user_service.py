@@ -51,7 +51,7 @@ class UserService:
             "email": user.email,
             "username": user.username,
         }
-    
+
     async def update_user(self, user_id:int, user_data: UserUpdate):
         user_data = user_data.model_dump()
         if user_data.get("password"):

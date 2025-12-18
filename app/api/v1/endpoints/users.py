@@ -1,11 +1,9 @@
-from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.api.dependencies.services import get_user_service
 from app.domain.schemas.users_schemas import UserCreate, UserResponse, UserUpdate
 from app.services.user_service import UserService
-
 
 router = APIRouter()
 
@@ -21,7 +19,7 @@ async def create_user(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.get(
-    "/", response_model=List[UserResponse], status_code=status.HTTP_200_OK
+    "/", response_model=list[UserResponse], status_code=status.HTTP_200_OK
 )
 async def get_users(
     skip: int = 0, limit: int = 100, service: UserService = Depends(get_user_service)
@@ -29,7 +27,7 @@ async def get_users(
     users = await service.repository.get_all(skip=skip, limit=limit)
     if not users:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Users not found"
         )
     return users
@@ -65,7 +63,7 @@ async def update_user(
     user = await service.update_user(user_id=user_id, user_data=user_data)
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
     return user
