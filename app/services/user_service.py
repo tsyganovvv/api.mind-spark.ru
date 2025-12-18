@@ -33,7 +33,8 @@ class UserService:
             "email": user.email,
             "username": user.username,
             "is_active": user.is_active,
-            "created_at": user.created_at
+            "created_at": user.created_at,
+            "fullname": user.fullname
         }
     
     async def authenticate_user(self, email: str, password: str) -> Optional[dict]:
