@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, List
 from sqlalchemy import select, update, delete
 from app.domain.models.users import User
-from app.domain.schemas.users import UserUpdate, UserCreateInDB as UserCreate
+from app.domain.schemas.users import UserUpdate, UserCreate
 
 class UserRepository:
     def __init__(self, db: AsyncSession):
@@ -30,7 +30,7 @@ class UserRepository:
         db_user = User(
             email = user_data.email,
             username = user_data.username,
-            full_name = user_data.fullname,
+            fullname = user_data.fullname,
             hashed_password = hashed_password
         )
         self.db.add(db_user)

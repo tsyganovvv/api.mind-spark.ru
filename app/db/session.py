@@ -22,5 +22,6 @@ async def get_db():
             await session.commit()
         except Exception:
             await session.rollback()
+            raise
         finally:
             await session.close()

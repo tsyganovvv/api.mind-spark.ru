@@ -9,11 +9,8 @@ class UserBase(Base):
     username: str
     fullname: Optional[str] = None
 
-class UserCreateRequest(UserBase):
-    password: str
-
-class UserCreateInDB(UserBase):
-    hashed_password: str
+class UserCreate(UserBase):
+    password: Optional[str]
 
 class UserUpdate(UserBase):
     email: Optional[EmailStr] = None
@@ -24,8 +21,8 @@ class UserUpdate(UserBase):
 class UserResponse(UserBase):
     id: int
     is_active: bool
-    created_at: bool
-    updates_at: Optional[datetime] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
