@@ -3,12 +3,7 @@ from typing import Optional
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.schemas.users_schemas import (
-    UserCreate,
-    UserResponse,
-    UserUpdate,
-    UserUpdateInDB,
-)
+from app.domain.schemas.users_schemas import UserCreate, UserUpdate, UserUpdateInDB
 from app.repositories.user_repository import UserRepository
 
 pwd_context = CryptContext(
@@ -29,39 +24,33 @@ class UserService:
     def get_password_hash(password: str) -> str:
         return pwd_context.hash(password)
 
-    async def create_user(self, user_data: UserCreate) -> UserResponse:
+    async def create_user(self, user_data: UserCreate) -> dict:
         existing_user = await self.repository.get_by_email(user_data.email)
         if existing_user:
             raise ValueError("User with this email already exists")
         hashed_password = self.get_password_hash(user_data.password)
 
         user = await self.repository.create(user_data, hashed_password)
-        response = UserResponse(**{
+        return {
             "id": user.id,
             "email": user.email,
             "username": user.username,
-            "fullname": user.fullname,
             "is_active": user.is_active,
-            "created_at": user.created_at
+            "created_at": user.created_at,
+            "fullname": user.fullname,
+        }
 
-        })
-        return response
-
-    async def authenticate_user(self, email: str, password: str) -> Optional[UserResponse]:
+    async def authenticate_user(self, email: str, password: str) -> Optional[dict]:
         user = await self.repository.get_by_email(email)
         if not user:
             return None
         if not self.verify_password(password, user.hashed_password):
             return None
-        response = UserResponse(**{
+        return {
             "id": user.id,
             "email": user.email,
             "username": user.username,
-            "fullname": user.fullname,
-            "is_active": user.is_active,
-            "created_at": user.created_at
-        })
-        return response
+        }
 
     async def update_user(self, user_id:int, user_data: UserUpdate):
         user_data = user_data.model_dump()

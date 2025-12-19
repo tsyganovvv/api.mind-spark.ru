@@ -1,7 +1,5 @@
 from typing import Optional
 
-from fastapi import HTTPException
-
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -45,14 +43,6 @@ class UserRepository:
         update_data = user_data.model_dump()
         if not update_data:
             return None
-        existing_user = await self.db.execute(
-            select(User).where(User.email == update_data["email"], User.id != user_id)
-        )
-        if existing_user.scalar_one_or_none():
-            raise HTTPException(
-                status_code=400,
-                detail="Email already registered to another user"
-            )
         await self.db.execute(
             update(User).where(User.id == user_id).values(**update_data)
         )
