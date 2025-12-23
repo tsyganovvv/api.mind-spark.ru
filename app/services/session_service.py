@@ -11,7 +11,7 @@ pwd_context = CryptContext(
 
 
 class SessionService:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession) -> None:
         self.Sessionrepository = SessionRepository(db)
         self.Userrepository = UserRepository(db)
 
@@ -23,9 +23,7 @@ class SessionService:
     def verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
 
-    async def login(
-        self, email: str, password: str
-    )->str:
+    async def login(self, email: str, password: str) -> str:
         user = await self.Userrepository.get_by_email(email)
         if not user:
             raise ValueError("No such user")
@@ -33,6 +31,3 @@ class SessionService:
             raise ValueError("Incorrect password")
         session = await self.Sessionrepository.create_session(user_id=user.id)
         return session.token
-
-
-

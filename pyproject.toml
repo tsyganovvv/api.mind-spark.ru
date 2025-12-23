@@ -44,18 +44,36 @@ build-backend = "poetry-core.build_meta"
 
 [tool.ruff]
 line-length = 88
-target-version = "py310"
-select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings
-    "F",   # pyflakes
-    "I",   # isort
-    "B",   # flake8-bugbear
-    "C4",  # flake8-comprehensions
-    "UP",  # pyupgrade
-    "RUF", # ruff-specific rules
+target-version = "py311"
+
+# Включаем ВСЕ, но с исключением конфликтующих правил
+select = ["ALL"]
+
+# Исключаем только то, что действительно мешает
+ignore = [
+    "D203",  # Конфликт с D211
+    "D212",  # Конфликт с D213  
+    "D401",  # Первая строка docstring должна быть в повелительном наклонении
+    "D407",  # Отсутствие описания вызовов в docstring
+    "D413",  # Отсутствие пустой строки после раздела docstring
+    "E501",  # Длина строки (форматтер позаботится)
+    "COM812", # Конфликт с форматированием
+    "ISC001", # Конфликт с форматированием
+    "INP001", # Имплицитные namespace пакеты (alembic)
+    "S104",   # Привязка ко всем интерфейсам (оставьте для прода)
+    "TRY003", # Длинные сообщения исключений (можно позже)
+    "B008",   # FastAPI Depends в аргументах - это нормально для FastAPI!
 ]
 
+[tool.ruff.lint]
+# Настройка правил для лучшего автофикса
+flake8-errmsg = { max-string-length = 80 }
+
+# Настройка pydocstyle (docstrings)
+[tool.ruff.lint.pydocstyle]
+convention = "google"  # или "numpy", "pep257"
+
 [tool.ruff.format]
-indent-style = "space"
 quote-style = "double"
+indent-style = "space"
+
