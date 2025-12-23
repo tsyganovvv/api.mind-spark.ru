@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repositories.sessions_repository import SessionRepository
 from app.repositories.user_repository import UserRepository
+from app.domain.schemas.users_schemas import UserResponse
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -31,3 +32,19 @@ class SessionService:
             raise ValueError("Incorrect password")
         session = await self.Sessionrepository.create_session(user_id=user.id)
         return session.token
+    
+    async def get_user_by_token(self, token: str)-> dict | None:
+        token_obj = await self.Sessionrepository.get_session_by_token(token)
+        if not token_obj:
+            raise ValueError("Error: No such token")
+        user = await self.Userrepository.get_by_id(token_obj.user_id)
+        if not user:
+            raise ValueError("Error: No such user")
+        return {
+            "id": user.id,
+            "email": user.email,
+            "username": user.username,
+            "is_active": user.is_active,
+            "created_at": user.created_at,
+            "fullname": user.fullname,
+        }
