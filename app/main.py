@@ -42,5 +42,5 @@ if __name__ == "__main__":
         port=8000,
         reload=True,
         ssl_keyfile=None,
-        ssl_certfile=None, 
+        ssl_certfile=None,
     )

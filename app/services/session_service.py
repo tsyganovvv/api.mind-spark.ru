@@ -1,10 +1,8 @@
+from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.repositories.sessions_repository import SessionRepository
 from app.repositories.user_repository import UserRepository
-from app.domain.schemas.auth_schemas import LoginRequest
-from app.domain.models.users_models import User
-from passlib.context import CryptContext
-
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
@@ -20,11 +18,11 @@ class SessionService:
     @staticmethod
     def get_password_hash(password: str) -> str:
         return pwd_context.hash(password)
-    
+
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
-    
+
     async def login(
         self, email: str, password: str
     )->str:
@@ -35,6 +33,6 @@ class SessionService:
             raise ValueError("Incorrect password")
         session = await self.Sessionrepository.create_session(user_id=user.id)
         return session.token
-        
-        
-        
+
+
+

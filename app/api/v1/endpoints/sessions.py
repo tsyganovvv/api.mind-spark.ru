@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status, responses
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 
 from app.api.dependencies.services import get_session_service
-from app.services.session_service import SessionService
 from app.domain.schemas.auth_schemas import LoginRequest
+from app.services.session_service import SessionService
 
 router = APIRouter()
 

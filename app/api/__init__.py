@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .v1.endpoints import items, users, sessions
+from .v1.endpoints import items, sessions, users
 
 router = APIRouter()
 
