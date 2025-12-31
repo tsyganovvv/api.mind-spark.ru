@@ -15,7 +15,7 @@ async def lifespan(app=FastAPI):
     await engine.dispose()
 
 
-app = FastAPI(title="MindSpark", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="api.mind-spark.ru", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
