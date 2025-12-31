@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "mind-spark-ru"
+name = "api.mind-spark-ru"
 version = "0.1.0"
 description = ""
 authors = ["Vladimir Tsyganov <tsyganov.vv0228@gmail.com>"]
